@@ -1,0 +1,13 @@
+*.sw*
+*~
+_build/
+bin/
+node_modules/
+vendor/
+.idea/
+*.iml
+*.DS_Store
+*.log
+client/testresults/
+_dist/
+data/db/

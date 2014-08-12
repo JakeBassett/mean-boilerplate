@@ -1,0 +1,78 @@
+{
+    "name": "mean-boilerplate",
+    "author": "Jake Bassett",
+    "description": "Boilerplate for MEAN (MongoDB, Express, Angular, Node) project",
+    "version": "0.0.1",
+    "homepage": "https://github.com/JakeBassett/mean-boilerplate",
+    "licenses": {
+        "type": "MIT",
+        "url": "https://raw.github.com/JakeBassett/mean-boilerplate/master/LICENSE"
+    },
+    "scripts": {
+        "postinstall": "bower install",
+        "test": "gulp test"
+    },
+    "bugs": {
+        "url": "https://github.com/samora/mean-launchpad/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:JakeBassett/mean-boilerplate.git"
+    },
+    "keywords": [
+        "nodejs",
+        "express",
+        "template",
+        "twitter",
+        "bootstrap",
+        "bootstrap3"
+    ],
+    "dependencies": {
+        "body-parser": "*",
+        "compression": "*",
+        "connect-flash": "*",
+        "connect-mongo": "*",
+        "cookie-parser": "*",
+        "express": "*",
+        "express-session": "*",
+        "express-jwt": "*",
+        "jsonwebtoken": "*",
+        "mongoose": "*",
+        "passport": "*",
+        "passport-local": "*",
+        "passport-local-mongoose": "*",
+        "path": "*",
+        "run-sequence": "*",
+        "static-favicon": "*",
+        "winston": "*"
+    },
+    "devDependencies": {
+        "connect-livereload": "*",
+        "tiny-lr": "*",
+        "jshint-stylish": "*",
+
+        "slash": "*",
+
+        "gulp": "*",
+        "gulp-clean": "*",
+        "gulp-concat": "*",
+        "gulp-flatten": "*",
+        "gulp-htmlmin": "*",
+        "gulp-imagemin": "*",
+        "gulp-inject": "*",
+        "gulp-jshint": "*",
+        "gulp-less": "*",
+        "gulp-livereload": "*",
+        "gulp-minify-css": "*",
+        "gulp-ng-html2js": "*",
+        "gulp-ngmin": "*",
+        "gulp-replace": "*",
+        "gulp-uglify": "*",
+        "gulp-wrap": "*",
+
+        "gulp-karma": "*",
+        "gulp-protractor": "*",
+
+        "protractor-screenshot-reporter": "*"
+    }
+}

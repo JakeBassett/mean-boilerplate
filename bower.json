@@ -1,0 +1,15 @@
+{
+    "name": "mean-boilerplate",
+    "version": "0.0.1",
+    "dependencies": {
+        "angular": "*",
+        "angular-resource": "*",
+        "angular-bootstrap": "*",
+        "angular-ui-router": "*",
+        "bootstrap": "*",
+        "font-awesome": "*"
+    },
+    "devDependencies": {
+        "angular-mocks": "*"
+    }
+}

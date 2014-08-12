@@ -1,0 +1,36 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div class="navbar-brand">MEAN Boilerplate</div>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ui-sref-active="active">
+                    <a href ui-sref="home">
+                        <i class="fa fa-home"></i>&nbsp;Home
+                    </a>
+                </li>
+                <li ui-sref-active="active">
+                    <a href ui-sref="about">
+                        <i class="fa fa-info-circle"></i>&nbsp;About
+                    </a>
+                </li>
+            </ul>
+            <div class="btn-group navbar-right navbar-btn" ui-sref-active="active" dropdown>
+                <a class="btn btn-primary" role="button" href ui-sref="user">
+                    <i class="fa fa-sign-in"></i>
+                    <span ng-if="user">&nbsp;{{user.username}}</span>
+                    <span ng-if="!user">&nbsp;Sign In</span>
+                </a>
+                <a class="btn btn-primary dropdown-toggle" role="button" href ui-sref="user">
+                    <i class="caret"></i>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Profile</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
