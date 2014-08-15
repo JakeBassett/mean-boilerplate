@@ -65,10 +65,15 @@ function initialize(port, alias, base) {
     app.use(alias, express.static(app.get('base')));    // Set the static files location
     app.use(alias, bodyParser.json());                  // To support JSON-encoded bodies
 
-
-//    app.use(alias, express.session({ secret: 'all da secrets r belong to u' }));
+    /*
+     * Much of the Passport docs center around sessions.
+     *
+     * We are not using sessions here. We are doing token based auth instead of
+     * sessions and cookies.
+     *
+     * Because of this, flash messages will not work.
+     */
     app.use(alias, passport.initialize());
-//    app.use(alias, passport.session());
 
     app.use(alias, livereload());
 

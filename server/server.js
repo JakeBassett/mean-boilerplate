@@ -5,10 +5,6 @@ var express = require('express'),
     expressJwt = require('express-jwt'),
     bodyParser = require('body-parser'),
     compress = require('compression'),
-//    cookieParser = require('cookie-parser'),
-    flash = require('connect-flash'),
-//    session = require('express-session'),
-//    MongoStore = require('connect-mongo')(session),
     favicon = require('static-favicon');
 
 var logger = require('./logger'),
@@ -42,20 +38,8 @@ function start(port, base, lrport, alias, callback) {
     /**
      * Parsers
      */
-//    app.use(alias, cookieParser('secret'));
     app.use(alias, bodyParser.json());              // To support JSON-encoded bodies
 
-    /**
-     * Session
-     */
-//    app.use(alias, session({
-//        secret: 'secret',
-//        resave: true,
-//        saveUninitialized: true,
-//        store: new MongoStore({
-//            url: 'monogdb://localhost/test'
-//        })
-//    }));
 
     /**
      * Protect api with JSON Web Tokens (JWT)
@@ -63,11 +47,6 @@ function start(port, base, lrport, alias, callback) {
     app.use(alias + '/api', expressJwt({
         secret: 'secret'
     }));
-
-    /**
-     * Failure Flash
-     */
-    app.use(alias, flash());                        // Flash messages
 
     /**
      * Serve Files

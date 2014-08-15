@@ -7,6 +7,14 @@ var auth = require('./auth');
 
 // TODO add db to build.conf.js
 
+/*
+ * This is the global test password. It will get hashed and salted in the DB.
+ */
+var password = 'test';
+
+/*
+ * These are the users that get saved into the database upon initialization.
+ */
 var users = [
     {
         username: 'admin',
@@ -50,7 +58,7 @@ function init(User) {
         }
 
         for (var i = 0; i < users.length; i++) {
-            User.register(new User(users[i]), 'test', registerCallback);
+            User.register(new User(users[i]), password, registerCallback);
         }
         logger.info('Database ready.');
     });

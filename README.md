@@ -13,6 +13,11 @@ Until then, no judgement is allowed. :-)
 
 ## Overview
 
+This project uses the MEAN (MongoDB, Express, Angular, Node) stack to create a basic web page to
+demonstrate the tech stack.
+
+There are a couple other goodies hiding within. A simple RBAC implementation is also shown as well
+as JWT (JSON Web Token) based authentication.
 
 ## Installation
 
@@ -38,4 +43,14 @@ To build the project, navigate tot he root of the project and enter:
     gulp notest
     
     
+## TODO
+
+* User profile - Update user profiles.
+
+* Redirects - Upon logging in the user is redirected to home page.
+
+* RBAC - Users will have access to different tabs. All sensitive server side APIs will be protected through Roles so
+even if an astute user opens the developer console and gets access to the protected client code, the server data will
+remain safe.
+
 

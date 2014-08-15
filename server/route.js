@@ -12,10 +12,7 @@ function init(app) {
     app.post(alias + '/login',
 
         passport.authenticate('local', {
-            session: false, // Using token based auth instead of session cookies
-//            successRedirect: '/',
-//            failureRedirect: '/login',
-            failureFlash: true
+            session: false // Using token based auth instead of session cookies
         }),
         function (req, res) {
             logger.debug('Successful login for user:', req.user.username);
