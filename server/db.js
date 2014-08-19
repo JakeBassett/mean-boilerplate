@@ -21,7 +21,7 @@ var users = [
         profile: {
             email: 'admin@example.com',
             prefs: {
-                stayLoggedIn: true
+                stayLoggedIn: false
             }
         }
     },
@@ -30,7 +30,7 @@ var users = [
         profile: {
             email: 'user@example.com',
             prefs: {
-                stayLoggedIn: true
+                stayLoggedIn: false
             }
         }
     }

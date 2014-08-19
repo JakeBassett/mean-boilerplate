@@ -11,27 +11,36 @@ angular.module('mbp.user', [
         $stateProvider
             .state('user', {
                 url: '/user',
-                controller: ['$rootScope', 'user', function ($rootScope, user) {
-                    $rootScope.user = user;
+                controller: ['$rootScope', 'AuthService', '$log', function ($rootScope, AuthService, $log) {
+                    $rootScope.user = AuthService.getCurrentUser();
+                    $log.info('User:', $rootScope.user);
                 }],
                 templateUrl: 'user/user.tpl.html',
                 data: {
                     pageTitle: 'User'
                 },
-                resolve: {
-                    user: ['UserService', function (UserService) {
-                        return UserService.getCurrentUser();
-                    }]
-                },
-                onEnter: ['$state', '$window' , function ($state, $window) {
-                    if (!$window.sessionStorage.token) {
+//                resolve: {
+//                    user: ['$state', 'UserService', function ($state, UserService) {
+//                        var user = UserService.getCurrentUser();
+//                        if (!user) {
+//                            $state.transitionTo('login');
+//                        }
+//                        return {};
+//                    }]
+//                },
+                onEnter: ['$state', 'AuthService' , function ($state, AuthService) {
+                    if (!AuthService.getCurrentUser()) {
                         $state.transitionTo('login');
                     }
                 }]
             })
             .state('login', {
                 url: '/login',
-                controller: 'LoginCtrl',
+                controller: ['$scope', 'AuthService', function ($scope, AuthService) {
+                    $scope.onSubmit = function () {
+                        AuthService.login($scope.user);
+                    };
+                }],
                 templateUrl: 'user/login.tpl.html',
                 data: {
                     pageTitle: 'Login'
@@ -40,54 +49,22 @@ angular.module('mbp.user', [
         ;
     })
 
-    .controller('LoginCtrl', function ($scope, AuthService) {
+    .run(function ($rootScope, $log, AuthService) {
 
-        $scope.onSubmit = function () {
-            AuthService.login($scope.user);
-        };
-    })
-
-    .run(function ($rootScope, $log, UserService) {
-
-        $rootScope.$on('user:login', function (event, user) {
-            $log.info('User logged in:', user);
-            UserService.setCurrentUser(user);
-        });
-
-        $rootScope.$on('user:logout', function () {
-            $log.info('User logged out');
-            UserService.deleteCurrentUser();
-        });
-
-    })
-
-    .factory('UserService', function ($rootScope, $state, $window) {
-
-        return {
-            getCurrentUser: function () {
-                if ($window.sessionStorage.user) {
-                    return $window.sessionStorage.user;
-                } else {
-                    $state.transitionTo('login');
-                }
-            },
-            setCurrentUser: function (user) {
-                if ($window.sessionStorage.user) {
-                    $state.transitionTo('user');
-                } else {
-                    $window.sessionStorage.user = JSON.stringify(user);
-                }
-            },
-            deleteCurrentUser: function () {
-                delete $window.sessionStorage.user;
-            }
-        };
     })
 
     .service('AuthService', function ($rootScope, $resource, $window, $log) {
 
         $rootScope.$on('user:unauthorized', function () {
-            deleteToken();
+            $log.info('User unauthorized');
+        });
+
+        $rootScope.$on('user:login', function (event, user) {
+            $log.info('User logged in:', user);
+        });
+
+        $rootScope.$on('user:logout', function () {
+            $log.info('User logged out');
         });
 
         /**
@@ -105,7 +82,7 @@ angular.module('mbp.user', [
         }
 
         function getDecodedProfile() {
-            if(!$window.sessionStorage.token){
+            if (!$window.sessionStorage.token) {
                 return {};
             }
 
@@ -124,7 +101,7 @@ angular.module('mbp.user', [
                 default:
                     throw 'Illegal base64url string!';
             }
-            return $window.atob(output);
+            return JSON.parse($window.atob(output));
         }
 
         function _login() {
@@ -150,6 +127,13 @@ angular.module('mbp.user', [
         }
 
         return {
+            getCurrentUser: function () {
+                var user = getDecodedProfile();
+                if(!user.username){
+                    return null;
+                }
+                return getDecodedProfile();
+            },
             login: function (user) {
                 _login().save(
                     /* Params */
@@ -160,7 +144,7 @@ angular.module('mbp.user', [
                     function (response) {
                         $log.info('response:', response);
                         saveToken(response.token);
-                        $rootScope.$broadcast('user:login', getDecodedProfile());
+                        $rootScope.$broadcast('user:login');
                     },
                     /* Failure */
                     function (response) {

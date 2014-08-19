@@ -122,28 +122,6 @@ User.statics.authenticate = function () {
     };
 };
 
-/**
- * The serialize and deserialize functions are used by Passport for sessions.
- *
- * They provide the information that will be transmitted to the client and
- * returned to allow the server to identify the session.
- */
-//User.statics.serialize = function () {
-//    return function (user, done) {
-//        logger.debug('Serialized user:', user.username);
-//        done(null, user.username);
-//    };
-//};
-//User.statics.deserialize = function () {
-//
-//    var User = this || mongoose.model('User');
-//
-//    return function (id, done) {
-//        logger.debug('Deserialized user:', id);
-//        User.findByUsername(id, done);
-//    };
-//};
-
 module.exports = mongoose.model('User', User);
 
 
