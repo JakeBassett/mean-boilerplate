@@ -11,9 +11,7 @@ angular.module('mbp.user', [
         $stateProvider
             .state('user', {
                 url: '/user',
-                controller: ['$rootScope', 'AuthService', '$log', function ($rootScope, AuthService, $log) {
-                    $rootScope.user = AuthService.getCurrentUser();
-                    $log.info('User:', $rootScope.user);
+                controller: ['$rootScope', function ($rootScope) {
                 }],
                 templateUrl: 'user/user.tpl.html',
                 data: {
@@ -49,23 +47,7 @@ angular.module('mbp.user', [
         ;
     })
 
-    .run(function ($rootScope, $log, AuthService) {
-
-    })
-
     .service('AuthService', function ($rootScope, $resource, $window, $log) {
-
-        $rootScope.$on('user:unauthorized', function () {
-            $log.info('User unauthorized');
-        });
-
-        $rootScope.$on('user:login', function (event, user) {
-            $log.info('User logged in:', user);
-        });
-
-        $rootScope.$on('user:logout', function () {
-            $log.info('User logged out');
-        });
 
         /**
          * Maintain session token in the sessionStorage. Although not supported
@@ -129,7 +111,7 @@ angular.module('mbp.user', [
         return {
             getCurrentUser: function () {
                 var user = getDecodedProfile();
-                if(!user.username){
+                if (!user.username) {
                     return null;
                 }
                 return getDecodedProfile();
@@ -148,8 +130,7 @@ angular.module('mbp.user', [
                     },
                     /* Failure */
                     function (response) {
-                        $log.warn('response:', response);
-                        deleteToken();
+                        $log.warn('Login failed:', response);
                     });
             },
             logout: function () {
@@ -157,7 +138,7 @@ angular.module('mbp.user', [
                     /* Params */
                     {},
                     /* Data */
-                    {},
+                    {token: $window.sessionStorage.token},
                     /* Success */
                     function (response) {
                         $log.info('response:', response);
@@ -166,9 +147,7 @@ angular.module('mbp.user', [
                     },
                     /* Failure */
                     function (response) {
-                        $log.warn('response:', response);
-                        deleteToken();
-                        $rootScope.$broadcast('user:logout');
+                        $log.warn('Logout failed:', response);
                     });
             }
         };

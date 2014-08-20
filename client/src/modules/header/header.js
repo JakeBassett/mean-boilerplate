@@ -4,7 +4,8 @@ angular.module('mbp.header', [
     'ui.bootstrap',
     'mbp.user'
 ])
-    .directive('mbpHeader', function ($log, AuthService) {
+    .directive('mbpHeader', function ($rootScope, $log, AuthService) {
+
         return {
             restrict: 'E',
             replace: true,
@@ -13,7 +14,7 @@ angular.module('mbp.header', [
             },
             templateUrl: 'header/header.tpl.html',
             link: function (scope, element, attrs) {
-//                scope.logout = AuthService.logout();
+                scope.logout = AuthService.logout;
             }
         };
     })

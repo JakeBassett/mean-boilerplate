@@ -17,8 +17,9 @@ module.exports = {
         path: {
             dev: '_build',
             dist: '_dist',
-            app: 'client/src',
-            lib: 'client/vendor'
+            client: 'client',
+            app: 'src',
+            lib: 'vendor'
         },
 
         modules: {
@@ -30,7 +31,7 @@ module.exports = {
              * of all modules template source files.
              */
             name: 'tpl-modules',
-            path: 'client/src/modules/'
+            path: 'src/modules/'
         },
 
         vendor: {
@@ -40,7 +41,7 @@ module.exports = {
                     'angular-resource/angular-resource.js',
                     'angular-bootstrap/ui-bootstrap-tpls.js',
                     'angular-ui-router/release/angular-ui-router.js',
-                    'vendor/angular-mocks/angular-mocks.js'
+                    'angular-mocks/angular-mocks.js'
                 ],
                 dest: 'js'
             },

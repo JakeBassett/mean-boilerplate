@@ -13,7 +13,25 @@ angular.module('meanBoilerplate', [
         $urlRouterProvider.otherwise('/home');
     }])
 
-    .run(function () {
+    .run(function ($rootScope, $log, AuthService) {
+
+        $rootScope.user = AuthService.getCurrentUser();
+
+        $rootScope.$on('user:unauthorized', function () {
+            $log.info('User unauthorized');
+        });
+        $rootScope.$on('user:login', function () {
+            $log.info('User logged in');
+            $rootScope.user = AuthService.getCurrentUser();
+        });
+        $rootScope.$on('user:logout', function () {
+            $log.info('User logged out');
+            $rootScope.user = null;
+        });
+        $rootScope.$on('user:update', function () {
+            $log.info('User profile updated');
+            $rootScope.user = AuthService.getCurrentUser();
+        });
     })
 
     .controller('AppCtrl', ['$scope', function ($scope, $log) {

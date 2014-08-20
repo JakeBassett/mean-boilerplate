@@ -30,10 +30,33 @@ function init(app) {
     );
 
     app.post(alias + '/logout',
+
+        passport.authenticate('bearer', {
+            session: false // Using token based auth instead of session cookies
+        }),
         function (req, res) {
-            req.logout();
-            res.redirect('/');
+            logger.debug('Successful logout for user');
+
         }
+//        function (req, res) {
+//
+//            logger.debug('Authorization:', req.headers.authorization);
+//            var auth = req.headers.authorization;
+//            var token = auth.substring(auth.search(" ")
+//
+////            jwt.verify(req.headers.authorization, 'secret',
+////                function (err, decoded) {
+////
+////                    if(err){
+////                        logger.warn('Invalid token:', req.headers.authorization);
+////                        return;
+////                    }
+////
+////                    logger.debug('Successful logout for user:', decoded.username);
+////                    req.logout();
+////                });
+//
+//        }
     );
 }
 

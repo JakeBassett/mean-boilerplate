@@ -29,8 +29,14 @@ var port = config.port,
 var files = config.files,
     devDir = config.files.path.dev,
     distDir = config.files.path.dist,
+    clientDir = config.files.path.client,
     appDir = config.files.path.app,
     libDir = config.files.path.lib;
+
+var srcVendorDir = path.join(clientDir, libDir),
+    srcAppDir = path.join(clientDir, appDir),
+    destVendorDir = path.join(devDir, libDir),
+    destAppDir = path.join(devDir, appDir);
 
 var modulePrefix = config.wrappers.prefix,
     moduleSuffix = config.wrappers.suffix;
@@ -47,12 +53,12 @@ var webdriverStandalone = require('gulp-protractor').webdriver_standalone,
  *  Default Task
  ************************************************/
 
-gulp.task('default', function (callback) {
-    runSequence(
-        'watch:dev',
-        'test:dev',
-        callback);
-});
+//gulp.task('default', function (callback) {
+//    runSequence(
+//        'watch:dev',
+//        'test:dev',
+//        callback);
+//});
 
 gulp.task('notest', function (callback) {
     runSequence(
@@ -61,40 +67,40 @@ gulp.task('notest', function (callback) {
     );
 });
 
-gulp.task('test', function (callback) {
-    runSequence(
-        'test:dev',
-        callback
-    );
-});
-
-gulp.task('dev', function (callback) {
-    runSequence(
-        'watch:dev',
+//gulp.task('test', function (callback) {
+//    runSequence(
 //        'test:dev',
-        callback);
-});
-
-gulp.task('qa', function (callback) {
-    runSequence(
-        'watch:dist',
-//        'test:dist',
-        callback);
-});
-
-gulp.task('build', function (callback) {
-    runSequence(
-        'build:dev',
-//        'test:dist',
-        callback);
-});
-
-gulp.task('dist', function (callback) {
-    runSequence(
-        'build:dist',
-//        'test:dist',
-        callback);
-});
+//        callback
+//    );
+//});
+//
+//gulp.task('dev', function (callback) {
+//    runSequence(
+//        'watch:dev',
+////        'test:dev',
+//        callback);
+//});
+//
+//gulp.task('qa', function (callback) {
+//    runSequence(
+//        'watch:dist',
+////        'test:dist',
+//        callback);
+//});
+//
+//gulp.task('build', function (callback) {
+//    runSequence(
+//        'build:dev',
+////        'test:dist',
+//        callback);
+//});
+//
+//gulp.task('dist', function (callback) {
+//    runSequence(
+//        'build:dist',
+////        'test:dist',
+//        callback);
+//});
 
 /************************************************
  *  Debug Server Task
@@ -216,38 +222,38 @@ gulp.task('watch:dist', ['server:dist'], function () {
  ************************************************/
 
 gulp.task('dev:vendor:js', function () {
-    return gulp.src(files.vendor.js.src, {cwd: libDir, base: '.'})
+    return gulp.src(files.vendor.js.src, {cwd: srcVendorDir, base: clientDir})
         .pipe(gulp.dest(devDir));
 });
 gulp.task('dev:vendor:css', function () {
-    return gulp.src(files.vendor.css.src, {cwd: libDir, base: '.'})
+    return gulp.src(files.vendor.css.src, {cwd: srcVendorDir, base: clientDir})
         .pipe(gulp.dest(devDir));
 });
 gulp.task('dev:vendor:img', function () {
-    return gulp.src(files.vendor.img.src, {cwd: libDir, base: '.'})
+    return gulp.src(files.vendor.img.src, {cwd: srcVendorDir, base: clientDir})
         .pipe(gulp.dest(devDir));
 });
 gulp.task('dev:vendor:fonts', function () {
-    return gulp.src(files.vendor.fonts.src, {cwd: libDir, base: '.'})
+    return gulp.src(files.vendor.fonts.src, {cwd: srcVendorDir, base: clientDir})
         .pipe(gulp.dest(devDir));
 });
 gulp.task('dev:app:js', function () {
-    return gulp.src(files.app.js.src, {cwd: appDir, base: '.'})
+    return gulp.src(files.app.js.src, {cwd: srcAppDir, base: clientDir})
         .pipe(jshint(files.jshint))
         .pipe(jshint.reporter('jshint-stylish'))
         .pipe(gulp.dest(devDir));
 });
 gulp.task('dev:app:less', function () {
-    return gulp.src(files.app.less.src, {cwd: appDir, base: '.'})
+    return gulp.src(files.app.less.src, {cwd: srcAppDir, base: clientDir})
         .pipe(less())
         .pipe(gulp.dest(devDir));
 });
 gulp.task('dev:app:img', function () {
-    return gulp.src(files.app.img.src, {cwd: appDir, base: '.'})
+    return gulp.src(files.app.img.src, {cwd: srcAppDir, base: clientDir})
         .pipe(gulp.dest(devDir));
 });
 gulp.task('dev:app:tpl', function () {
-    return gulp.src(files.app.tpl.src, {cwd: appDir, base: '.'})
+    return gulp.src(files.app.tpl.src, {cwd: srcAppDir, base: clientDir})
         .pipe(nghtml2js({
             moduleName: files.modules.name,
             stripPrefix: files.modules.path
@@ -255,30 +261,26 @@ gulp.task('dev:app:tpl', function () {
         .pipe(gulp.dest(devDir));
 });
 gulp.task('dev:html', function () {
-    var cwdVendor = path.join(devDir, libDir);
-    var cwdApp = path.join(devDir, appDir);
 
-    var ignorePath = slash(__dirname + '/' + devDir);
-
-    return gulp.src(files.html.src, {cwd: appDir})
-        .pipe(inject(gulp.src(files.vendor.css.src, {read: false, cwd: cwdVendor}), {
+    return gulp.src(files.html.src, {cwd: srcAppDir})
+        .pipe(inject(gulp.src(files.vendor.css.src, {read: false, cwd: destVendorDir}), {
             addRootSlash: false,
-            ignorePath: ignorePath,
+            addPrefix: libDir,
             starttag: '<!-- inject:vendor:{{ext}} -->'
         }))
-        .pipe(inject(gulp.src(files.vendor.js.src, {read: false, cwd: cwdVendor}), {
+        .pipe(inject(gulp.src(files.vendor.js.src, {read: false, cwd: destVendorDir}), {
             addRootSlash: false,
-            ignorePath: ignorePath,
+            addPrefix: libDir,
             starttag: '<!-- inject:vendor:{{ext}} -->'
         }))
-        .pipe(inject(gulp.src(path.join('**', '*.css'), {read: false, cwd: cwdApp}), {
+        .pipe(inject(gulp.src(path.join('**', '*.css'), {read: false, cwd: destAppDir}), {
             addRootSlash: false,
-            ignorePath: ignorePath,
+            addPrefix: appDir,
             starttag: '<!-- inject:app:{{ext}} -->'
         }))
-        .pipe(inject(gulp.src(path.join('**', '*.js'), {read: false, cwd: cwdApp}), {
+        .pipe(inject(gulp.src(path.join('**', '*.js'), {read: false, cwd: destAppDir}), {
             addRootSlash: false,
-            ignorePath: ignorePath,
+            addPrefix: appDir,
             starttag: '<!-- inject:app:{{ext}} -->'
         }))
         .pipe(gulp.dest(devDir));
