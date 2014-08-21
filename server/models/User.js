@@ -1,6 +1,7 @@
 'use strict';
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    jwt = require('jsonwebtoken');
 
 var logger = require('../logger');
 
@@ -88,7 +89,7 @@ User.statics.findByUsername = function (username, cb) {
 };
 
 /**
- * This is a function that is used by Passport for authentication.
+ * This is a function that is used by Passport for authentication of 'local' strategy.
  *
  * It must be passed to a new LocalStrategy.
  */
@@ -106,21 +107,53 @@ User.statics.authenticate = function () {
                 }
 
                 if (!user) {
-                    logger.debug('User not found for:', username);
                     return done(null, false, {message: 'User not found'});
                 }
 
-                if (user.authenticate(password)) {
-                    logger.debug('Authentication success for:', user.username);
-                    return done(null, user);
-                } else {
-                    logger.debug('Authentication failed for:', user.username);
+                if (!user.authenticate(password)) {
                     return done(null, false, {message: 'Authentication failed'});
+                } else {
+                    return done(null, user, {message: 'Authentication success'});
                 }
             });
         });
     };
 };
+
+/**
+ * This is a function that is used by Passport for authentication of 'bearer' strategy.
+ *
+ * It must be passed to a new BearerStrategy.
+ */
+User.statics.validate = function () {
+
+    var User = this || mongoose.model('User');
+
+    return function (token, done) {
+
+        process.nextTick(function () {
+
+            jwt.verify(token, 'secret', function (err, decoded) {
+
+                if (err) {
+                    logger.error('err:', err);
+                    return done(err);
+                }
+
+                User.findByUsername(decoded.username, function (err, user) {
+
+                    if (!user) {
+                        return done(null, false, {message: 'User not found'});
+                    }
+
+                    return done(null, user, {message: 'Validation success'});
+                });
+            });
+
+        });
+    };
+};
+
 
 module.exports = mongoose.model('User', User);
 

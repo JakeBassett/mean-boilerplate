@@ -1,7 +1,8 @@
 'use strict';
 
 var passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy;
+    LocalStrategy = require('passport-local').Strategy,
+    BearerStrategy = require('passport-http-bearer').Strategy;
 
 var logger = require('./logger');
 
@@ -18,7 +19,7 @@ function initUser(User) {
     });
 
     passport.use(new LocalStrategy(User.authenticate()));
-
+    passport.use(new BearerStrategy(User.validate()));
 //    passport.serializeUser(User.serialize());
 //    passport.deserializeUser(User.deserialize());
 }

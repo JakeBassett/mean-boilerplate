@@ -40,6 +40,7 @@
         "mongoose": "*",
         "passport": "*",
         "passport-local": "*",
+        "passport-http-bearer": "*",
         "passport-local-mongoose": "*",
         "path": "*",
         "run-sequence": "*",

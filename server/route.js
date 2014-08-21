@@ -9,55 +9,60 @@ function init(app) {
 
     var alias = app.get('alias');
 
-    app.post(alias + '/login',
+//    app.post(alias + '/login',
+//
+//        passport.authenticate('local', {
+//            session: false // Using token based auth instead of session cookies
+//        }),
+//        function (req, res) {
+//            logger.debug('Successful login for user:', req.user.username);
+//
+//            var data = {
+//                username: req.user.username,
+//                profile: req.user.profile
+//            };
+//
+//            var token = jwt.sign(data, 'secret', {expiresInMinutes: 60 * 5});
+//            res.json({
+//                token: token
+//            });
+//        }
+//    );
 
-        passport.authenticate('local', {
-            session: false // Using token based auth instead of session cookies
-        }),
-        function (req, res) {
-            logger.debug('Successful login for user:', req.user.username);
+    app.post(alias + '/login', function (req, res, next) {
+        passport.authenticate('local', function (err, user, info) {
+
+            if (err) {
+                logger.warn('Failed to login user:', info);
+                return next(err);
+            }
 
             var data = {
-                username: req.user.username,
-                profile: req.user.profile
+                username: user.username,
+                profile: user.profile
             };
 
             var token = jwt.sign(data, 'secret', {expiresInMinutes: 60 * 5});
-            res.json({
-                token: token
-            });
-        }
-    );
+            logger.debug('Successful login for user:', user.username);
+            res.json({token: token});
 
-    app.post(alias + '/logout',
+        })(req, res, next);
+    });
 
-        passport.authenticate('bearer', {
-            session: false // Using token based auth instead of session cookies
-        }),
-        function (req, res) {
-            logger.debug('Successful logout for user');
+    app.post(alias + '/logout', function (req, res, next) {
+        passport.authenticate('bearer', function (err, user, info) {
 
-        }
-//        function (req, res) {
-//
-//            logger.debug('Authorization:', req.headers.authorization);
-//            var auth = req.headers.authorization;
-//            var token = auth.substring(auth.search(" ")
-//
-////            jwt.verify(req.headers.authorization, 'secret',
-////                function (err, decoded) {
-////
-////                    if(err){
-////                        logger.warn('Invalid token:', req.headers.authorization);
-////                        return;
-////                    }
-////
-////                    logger.debug('Successful logout for user:', decoded.username);
-////                    req.logout();
-////                });
-//
-//        }
-    );
+            if (err) {
+                logger.warn('Failed to logout user:', info);
+                return next(err);
+            }
+
+            req.logout();
+            logger.debug('Successful logout for user:', user.username);
+            return res.status(200).end();
+
+        })(req, res, next);
+    });
 }
 
 module.exports.init = init;
