@@ -13,7 +13,7 @@ angular.module('meanBoilerplate', [
         $urlRouterProvider.otherwise('/home');
     }])
 
-    .run(function ($rootScope, $log, AuthService) {
+    .run(function ($rootScope, $log, $state, AuthService) {
 
         $rootScope.user = AuthService.getCurrentUser();
 
@@ -22,10 +22,12 @@ angular.module('meanBoilerplate', [
         });
         $rootScope.$on('user:login', function () {
             $log.info('User logged in');
+            $state.go('home');
             $rootScope.user = AuthService.getCurrentUser();
         });
         $rootScope.$on('user:logout', function () {
             $log.info('User logged out');
+            $state.go('login');
             $rootScope.user = null;
         });
         $rootScope.$on('user:update', function () {

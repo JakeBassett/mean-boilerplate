@@ -8,8 +8,6 @@ var logger = require('./logger');
 
 function init(app) {
     app.use(passport.initialize());
-//    app.use(passport.session());
-
     logger.info('Initialized authentication.');
 }
 
@@ -20,8 +18,6 @@ function initUser(User) {
 
     passport.use(new LocalStrategy(User.authenticate()));
     passport.use(new BearerStrategy(User.validate()));
-//    passport.serializeUser(User.serialize());
-//    passport.deserializeUser(User.deserialize());
 }
 
 module.exports.init = init;

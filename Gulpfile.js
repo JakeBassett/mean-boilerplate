@@ -179,15 +179,13 @@ gulp.task('build:dist', function (callback) {
  ************************************************/
 gulp.task('watch:dev', ['server:dev'], function () {
 
-    var cwd = appDir;
-
     gulp.watch('Gulpfile.js', ['build:dev']);
     gulp.watch('build.conf.js', ['build:dev']);
-    gulp.watch(files.app.js.src, {cwd: cwd}, ['dev:app:js']);
-    gulp.watch(files.app.less.src, {cwd: cwd}, ['dev:app:less']);
-    gulp.watch(files.app.img.src, {cwd: cwd}, ['dev:app:img']);
-    gulp.watch(files.app.tpl.src, {cwd: cwd}, ['dev:app:tpl']);
-    gulp.watch(files.html.src, {cwd: cwd}, ['dev:html']);
+    gulp.watch(files.app.js.src, {cwd: srcAppDir}, ['dev:app:js']);
+    gulp.watch(files.app.less.src, {cwd: srcAppDir}, ['dev:app:less']);
+    gulp.watch(files.app.img.src, {cwd: srcAppDir}, ['dev:app:img']);
+    gulp.watch(files.app.tpl.src, {cwd: srcAppDir}, ['dev:app:tpl']);
+    gulp.watch(files.html.src, {cwd: srcAppDir}, ['dev:html']);
 
     /*
      * Livereload
@@ -199,15 +197,13 @@ gulp.task('watch:dev', ['server:dev'], function () {
 
 gulp.task('watch:dist', ['server:dist'], function () {
 
-    var cwd = appDir;
-
     gulp.watch('Gulpfile.js', ['build:dist']);
     gulp.watch('build.conf.js', ['build:dist']);
-    gulp.watch(files.app.js.src, {cwd: cwd}, ['dist:app:js']);
-    gulp.watch(files.app.less.src, {cwd: cwd}, ['dist:app:less']);
-    gulp.watch(files.app.img.src, {cwd: cwd}, ['dist:app:img']);
-    gulp.watch(files.app.tpl.src, {cwd: cwd}, ['dist:app:tpl']);
-    gulp.watch(files.html.src, {cwd: cwd}, ['dist:html']);
+    gulp.watch(files.app.js.src, {cwd: srcAppDir}, ['dist:app:js']);
+    gulp.watch(files.app.less.src, {cwd: srcAppDir}, ['dist:app:less']);
+    gulp.watch(files.app.img.src, {cwd: srcAppDir}, ['dist:app:img']);
+    gulp.watch(files.app.tpl.src, {cwd: srcAppDir}, ['dist:app:tpl']);
+    gulp.watch(files.html.src, {cwd: srcAppDir}, ['dist:html']);
 
     /*
      * Livereload
