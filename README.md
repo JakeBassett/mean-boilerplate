@@ -40,7 +40,8 @@ Once the database is running, the admin console can be reached by entering the f
 
 Make sure that you have installed npm and bower.
 
-    http://nodejs.org/
+Install NodeJS http://nodejs.org/
+
     sudo npm install -g bower
 
 Download and install dependencies by running the following commands.
