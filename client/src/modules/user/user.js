@@ -11,22 +11,16 @@ angular.module('mbp.user', [
         $stateProvider
             .state('user', {
                 url: '/user',
-                controller: ['$rootScope', function ($rootScope) {
+                controller: ['$scope', 'AuthService', function ($scope, AuthService) {
+                    $scope.onSubmit = function () {
+                        AuthService.saveProfile($scope.user);
+                    };
                 }],
                 templateUrl: 'user/user.tpl.html',
                 data: {
                     pageTitle: 'User'
                 },
-//                resolve: {
-//                    user: ['$state', 'UserService', function ($state, UserService) {
-//                        var user = UserService.getCurrentUser();
-//                        if (!user) {
-//                            $state.transitionTo('login');
-//                        }
-//                        return {};
-//                    }]
-//                },
-                onEnter: ['$state', 'AuthService' , function ($state, AuthService) {
+                onEnter: ['$state', 'AuthService', function ($state, AuthService) {
                     if (!AuthService.getCurrentUser()) {
                         $state.transitionTo('login');
                     }
@@ -86,6 +80,17 @@ angular.module('mbp.user', [
             return JSON.parse($window.atob(output));
         }
 
+        function _profile() {
+            return $resource(
+                /* url */
+                '/profile',
+                /* [paramDefaults] */
+                {},
+                /* [actions] */
+                {}
+            );
+        }
+
         function _login() {
             return $resource(
                 /* url */
@@ -115,6 +120,23 @@ angular.module('mbp.user', [
                     return null;
                 }
                 return getDecodedProfile();
+            },
+            saveProfile: function (user) {
+                _profile().save(
+                    /* Params */
+                    {},
+                    /* Data */
+                    {profile: user.profile},
+                    /* Success */
+                    function (response) {
+                        $log.info('response:', response);
+                        saveToken(response.token);
+                        $rootScope.$broadcast('user:update');
+                    },
+                    /* Failure */
+                    function (response) {
+                        $log.warn('Update profile failed:', response);
+                    });
             },
             login: function (user) {
                 _login().save(

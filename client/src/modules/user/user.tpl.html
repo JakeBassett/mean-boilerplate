@@ -9,29 +9,18 @@
             <input class="form-control" name="username" type="text" ng-model="user.username"
                    placeholder="Enter username" ng-disabled="true">
         </div>
-        <div class="error" ng-show="user_form.email.$dirty && user_form.email.$invalid">
-            <small class="error" ng-show="user_form.email.$error.required">Username is required.</small>
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input required class="form-control" name="password" type="password" ng-model="user.password"
-                   placeholder="Enter password">
-        </div>
         <div class="form-group">
             <label>Email</label>
-            <input required class="form-control" name="email" type="email" ng-model="user.email"
+            <input required class="form-control" name="email" type="email" ng-model="user.profile.email"
                    placeholder="Enter email">
-        </div>
-        <div class="error" ng-show="user_form.password.$dirty && user_form.password.$invalid">
-            <small class="error" ng-show="user_form.password.$error.required">Password is required.</small>
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" ng-model="user.options.stayLoggedIn">Keep me logged in
+                <input type="checkbox" ng-model="user.profile.prefs.stayLoggedIn">Keep me logged in
             </label>
         </div>
 
-        <button type="submit" class="btn btn-default">Cancel</button>
+        <button type="button" class="btn btn-default">Cancel</button>
         <button type="submit" class="btn btn-default">Save</button>
     </form>
 </div>

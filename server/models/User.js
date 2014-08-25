@@ -26,18 +26,17 @@ var User = new mongoose.Schema({
     }
 });
 
+User.methods.authenticate = function (password) {
+    // TODO Use crypto to authenticate with salt and hashed password
+    var self = this;
+    return self.password === password;
+};
 
 User.methods.setPassword = function (password) {
     // TODO Use crypto to salt and hash the password
     var self = this;
     self.password = password;
     return true;
-};
-
-User.methods.authenticate = function (password) {
-    // TODO Use crypto to authenticate with salt and hashed password
-    var self = this;
-    return self.password === password;
 };
 
 User.statics.register = function (user, password, cb) {
@@ -132,9 +131,7 @@ User.statics.validate = function () {
     return function (token, done) {
 
         process.nextTick(function () {
-
             jwt.verify(token, 'secret', function (err, decoded) {
-
                 if (err) {
                     logger.error('err:', err);
                     return done(err);
@@ -149,7 +146,6 @@ User.statics.validate = function () {
                     return done(null, user, {message: 'Validation success'});
                 });
             });
-
         });
     };
 };
