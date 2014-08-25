@@ -3,7 +3,7 @@
 ## Warning
 
 This is a VERY rough work in progress. The project structure, code, and
-documentation are not anywhere close to being complete or optimized.
+documentation are not complete or optimized.
 I am making this repo public in hopes that even in its rough state it
 may help someone get started with this flavor of tech stack.
 
@@ -51,7 +51,7 @@ Download and install dependencies by running the following commands.
 
 The server is started and built with a single command
 
-To build the project, navigate tot he root of the project and enter:
+To build the project, navigate to the root of the project and enter:
 
     gulp notest
 
@@ -59,8 +59,6 @@ To build the project, navigate tot he root of the project and enter:
 ## TODO
 
 * User profile - Update user profiles.
-
-* Redirects - Upon logging in the user is redirected to home page.
 
 * RBAC - Users will have access to different tabs. All sensitive server side APIs will be protected through Roles so
 even if an astute user opens the developer console and gets access to the protected client code, the server data will
