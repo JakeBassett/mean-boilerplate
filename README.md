@@ -25,7 +25,7 @@ as JWT (JSON Web Token) based authentication.
 
 ### Database
 
-Install mongodb http://www.mongodb.org/
+Install MongoDB http://www.mongodb.org/
 
 To start the mongo data base open a terminal, navigate to the root of the project and enter:
 
